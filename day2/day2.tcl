@@ -32,10 +32,10 @@ proc ::dayTwo::partOne {} {
 
 	foreach line [::common::input] {
 		array set lc [::dayTwo::countChars $line]
-		set counts(2) [expr $counts(2) + $lc(2)]
-		set counts(3) [expr $counts(3) + $lc(3)]
+		set counts(2) [expr {$counts(2) + $lc(2)}]
+		set counts(3) [expr {$counts(3) + $lc(3)}]
 	}
-	::common::log "PartOne: [expr $counts(2) * $counts(3)]"
+	::common::log "PartOne: [expr {$counts(2) * $counts(3)}]"
 }
 
 
@@ -51,11 +51,11 @@ proc ::dayTwo::partTwo {} {
 			array set sims [list $aLine [list]]
 			foreach aChar $aSplit bChar [split $bLine ""] {
 				if {[string compare $aChar $bChar] != 0} {
-					set dc [expr $dc + 1]
+					incr dc
 				} else {
 					array set sims [list $aLine [linsert $sims($aLine) $idx $aChar]]
 				}
-				set idx [expr $idx + 1]
+				incr idx
 			}
 			if {$dc == 1} {
 				::common::log "PartTwo: [join $sims($aLine) ""]"
