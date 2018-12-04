@@ -7,7 +7,7 @@ source "../common.tcl"
 
 namespace eval ::dayTwo {}
 
-proc ::dayTwo::countChars {string} {
+proc ::dayTwo::findDoubleTripple {string} {
 	array set ret [list 2 0 3 0]
 	set splitString [split $string ""]
 	set charList [lsort -unique [split $string ""]]
@@ -31,7 +31,7 @@ proc ::dayTwo::partOne {} {
 	array set counts [list 2 0 3 0]
 
 	foreach line [::common::input] {
-		array set lc [::dayTwo::countChars $line]
+		array set lc [::dayTwo::findDoubleTripple $line]
 		set counts(2) [expr {$counts(2) + $lc(2)}]
 		set counts(3) [expr {$counts(3) + $lc(3)}]
 	}
