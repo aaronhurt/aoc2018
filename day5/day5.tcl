@@ -32,9 +32,10 @@ proc ::dayFive::partOne {} {
 
 proc ::dayFive::partTwo {string} {
 	set len [string length $string]
+	::common::log "PartTwo: starting length [string length $string]"
 	foreach lc $::dayFive::lcs hc $::dayFive::hcs {
 		set mapped [string map [list $lc {} $hc {}] $string]
-		::common::log "PartTwo: pre-reactor length without $lc/$hc [string length $mapped]"
+		::common::log "PartTwo: post-map length without $lc/$hc [string length $mapped]"
 		foreach {sl ss} [::dayFive::reactor $mapped] {}
 		if {$sl < $len} {
 			set len $sl
