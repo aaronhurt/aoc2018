@@ -6,12 +6,10 @@
 source "../common.tcl"
 
 namespace eval ::dayFour {
-	variable state
 	variable minutes
 	for {set x 0} {$x < 60} {incr x} {
 		lappend minutes [format {%02d} $x]
 	}
-	variable sleeping; array set sleeping [list]
 	variable counts [list]
 }
 
@@ -22,11 +20,11 @@ proc ::dayFour::partOne {} {
 			return
 		}
 		set seconds [clock scan "$year-$month-$day $hour:$minute" -format {%Y-%m-%d %H:%M}]
-		lappend ::dayFour::state [list $seconds $w2]
+		lappend events [list $seconds $w2]
 	}
 
-	set asleep 0; set gid 0; set sleepminute 0
-	foreach event [lsort -integer -increasing -index 0 $::dayFour::state] {
+	set asleep 0; set gid 0; set sleepminute 0; array set sleepers [list]
+	foreach event [lsort -integer -increasing -index 0 $events] {
 		set eminute [scan [clock format [lindex $event 0] -format {%M}] {%d}]
 		set etype [lindex $event 1]
 		switch -glob -- $etype {
@@ -41,7 +39,7 @@ proc ::dayFour::partOne {} {
 			{up} {
 				if {$asleep == 1} {
 					for {set x $sleepminute} {$x < $eminute} {incr x} {
-						lappend ::dayFour::sleeping($gid) [format {%02d} [scan $x {%d}]]
+						lappend sleepers($gid) [format {%02d} [scan $x {%d}]]
 					}
 				}
 				set asleep 0
@@ -49,11 +47,11 @@ proc ::dayFour::partOne {} {
 		}
 	}
 
-	foreach gid [array names ::dayFour::sleeping] {
-		set ::dayFour::sleeping($gid) [lsort -increasing $::dayFour::sleeping($gid)]
-		set total [llength $::dayFour::sleeping($gid)]
+	foreach gid [array names sleepers] {
+		set sleepers($gid) [lsort -increasing sleepers($gid)]
+		set total [llength $sleepers($gid)]
 		foreach min $dayFour::minutes {
-			set mc [llength [lsearch -all -exact $::dayFour::sleeping($gid) $min]]
+			set mc [llength [lsearch -all -exact $sleepers($gid) $min]]
 			lappend ::dayFour::counts [list $gid $min $mc $total]
 		}
 	}
