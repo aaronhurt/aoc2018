@@ -33,7 +33,6 @@ proc ::dayFive::partOne {} {
 proc ::dayFive::partTwo {string} {
 	set len [string length $string]
 	foreach lc $::dayFive::lcs hc $::dayFive::hcs {
-##		::common::log "PartTwo: removing all $lc/$hc"
 		set mapped [string map [list $lc {} $hc {}] $string]
 		::common::log "PartTwo: pre-reactor length without $lc/$hc [string length $mapped]"
 		foreach {sl ss} [::dayFive::reactor $mapped] {}
