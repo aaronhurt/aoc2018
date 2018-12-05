@@ -19,27 +19,26 @@ namespace eval ::dayFive {
 proc ::dayFive::reactor {string} {
 	set s2 [string map $::dayFive::rm $string]
 	if {[string length $string] == [string length $s2]} {
-		return [list $s2 [string length $s2]]
+		return [string length $s2]
 	}
 	::dayFive::reactor $s2
 }
 
 proc ::dayFive::partOne {} {
-	set r [::dayFive::reactor [lindex $::dayFive::lines 0]]
-	::common::log "PartOne: [lindex $r 1]"
+	set rl [::dayFive::reactor [lindex $::dayFive::lines 0]]
+	::common::log "PartOne: $rl"
 }
 
 proc ::dayFive::partTwo {} {
 	set line [lindex $::dayFive::lines 0]
-	set len [string length $line]; set str ""
+	set len [string length $line]
 	foreach lc $::dayFive::lcs hc $::dayFive::hcs {
 		::common::log "PartTwo: removing all $lc/$hc"
 		set mapped [string map [list $lc {} $hc {}] $line]
 		::common::log "PartTwo: pre-reactor length [string length $mapped]"
-		set r [::dayFive::reactor $mapped]
-		if {[lindex $r 1] < $len} {
-			set len [lindex $r 1]
-			set str [lindex $r 0]
+		set rl [::dayFive::reactor $mapped]
+		if {$rl < $len} {
+			set len $rl
 			::common::log "PartTwo: new shortest $len"
 		}
 	}
