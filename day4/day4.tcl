@@ -12,6 +12,7 @@ namespace eval ::dayFour {
 		lappend minutes [format {%02d} $x]
 	}
 	variable sleeping; array set sleeping [list]
+	variable counts [list]
 }
 
 proc ::dayFour::partOne {} {
@@ -23,6 +24,7 @@ proc ::dayFour::partOne {} {
 		set seconds [clock scan "$year-$month-$day $hour:$minute" -format {%Y-%m-%d %H:%M}]
 		lappend ::dayFour::state [list $seconds $w2]
 	}
+
 	set asleep 0; set gid 0; set sleepminute 0
 	foreach event [lsort -integer -increasing -index 0 $::dayFour::state] {
 		set eminute [scan [clock format [lindex $event 0] -format {%M}] {%d}]
@@ -46,42 +48,36 @@ proc ::dayFour::partOne {} {
 			}
 		}
 	}
-	set picked 0
+
 	foreach gid [array names ::dayFour::sleeping] {
 		set ::dayFour::sleeping($gid) [lsort -increasing $::dayFour::sleeping($gid)]
-		if {$picked == 0} {
-			set picked $gid; continue
-		}
-		if {[llength $::dayFour::sleeping($gid)] > [llength $::dayFour::sleeping($picked)]} {
-			set picked $gid
+		set total [llength $::dayFour::sleeping($gid)]
+		foreach min $dayFour::minutes {
+			set mc [llength [lsearch -all -exact $::dayFour::sleeping($gid) $min]]
+			lappend ::dayFour::counts [list $gid $min $mc $total]
 		}
 	}
-##	parray sleeping
-	::common::log "PartOne: picked $picked asleep [llength $::dayFour::sleeping($picked)] minutes"
-	set counts [list]
-	foreach m $dayFour::minutes {
-		lappend counts [list [llength [lsearch -all -exact $::dayFour::sleeping($picked) $m]] $m]
-	}
-	set sleepiest [lindex [lsort -decreasing -integer -index 0 $counts] 0 1]
+
+	set temps [lsort -decreasing -integer -index 3 $::dayFour::counts]
+	set gid [lindex $temps 0 0]
+	set slept [lindex $temps 0 3]
+
+	::common::log "PartOne: picked $gid asleep $slept minutes"
+
+	set temps [lsort -decreasing -integer -index 2 [lrange $temps 0 59]]
+	set sleepiest [lindex $temps 0 1]
+
 	::common::log "PartOne: sleepiest minute $sleepiest"
-	::common::log "PartOne: $picked * $sleepiest = [expr {$picked * $sleepiest}]"
+	::common::log "PartOne: $gid * $sleepiest = [expr {$gid * $sleepiest}]"
 }
 
 proc ::dayFour::partTwo {} {
-	set sleepers [list]; set sleepiest [list 0 0 0]
-	foreach gid [array names ::dayFour::sleeping] {
-		set counts [list]
-		foreach m $dayFour::minutes {
-			lappend counts [list [llength [lsearch -all -exact $::dayFour::sleeping($gid) $m]] $m $gid]
-		}
-		set counts [lsort -decreasing -integer -index 0 $counts]
-		if {[lindex $counts 0 0] > [lindex $sleepiest 0]} {
-			set sleepiest [lindex $counts 0]
-		}
-	}
-	foreach {t m g} $sleepiest {}
-	::common::log "PartTwo: guard $g slept $t times on minute $m"
-	::common::log "PartTwo: $g * $m = [expr {$g * $m}]"
+	set temps [lsort -decreasing -integer -index 2 $::dayFour::counts]
+
+	foreach {gid min mc total} [lindex $temps 0] {}; ## shortcut assignment
+
+	::common::log "PartTwo: guard $gid slept $mc times on minute $min"
+	::common::log "PartTwo: $gid * $min = [expr {$gid * $min}]"
 }
 
 ::dayFour::partOne
