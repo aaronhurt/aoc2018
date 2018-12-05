@@ -1,8 +1,7 @@
-#!/usr/bin/env tclsh
-#
 ## Advent of Code 2018 - Common functions
 #
 
+package require Tcl 8.6
 namespace eval ::common {}
 
 proc ::common::log {text} {

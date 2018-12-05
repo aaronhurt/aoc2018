@@ -1,9 +1,8 @@
-#!/usr/bin/env tclsh
+#!/usr/bin/env tclsh8.6
 #
 ## Advent of Code 2018 - Day 5
 #
 
-interp recursionlimit {} 10000
 source "../common.tcl"
 
 namespace eval ::dayFive {
@@ -21,7 +20,7 @@ proc ::dayFive::reactor {string} {
 	if {[string length $string] == [string length $s2]} {
 		return [list [string length $s2] $s2]
 	}
-	::dayFive::reactor $s2
+	tailcall ::dayFive::reactor $s2
 }
 
 proc ::dayFive::partOne {} {

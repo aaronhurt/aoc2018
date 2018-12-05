@@ -1,4 +1,4 @@
-#!/usr/bin/env tclsh
+#!/usr/bin/env tclsh8.6
 #
 ## Advent of Code 2018 - Day 1
 #
@@ -27,8 +27,7 @@ proc ::dayOne::partTwo {{total 0} {loop 0}} {
 		}
 		set ::dayOne::foundFreqs($total) [list]
 	}
-	incr loop
-	::dayOne::partTwo $total $loop
+	tailcall ::dayOne::partTwo $total [incr loop]
 }
 
 ::dayOne::partOne
