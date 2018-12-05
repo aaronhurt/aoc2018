@@ -19,31 +19,30 @@ namespace eval ::dayFive {
 proc ::dayFive::reactor {string} {
 	set s2 [string map $::dayFive::rm $string]
 	if {[string length $string] == [string length $s2]} {
-		return [string length $s2]
+		return [list [string length $s2] $s2]
 	}
 	::dayFive::reactor $s2
 }
 
 proc ::dayFive::partOne {} {
-	set rl [::dayFive::reactor [lindex $::dayFive::lines 0]]
-	::common::log "PartOne: $rl"
+	foreach {sl ss} [::dayFive::reactor [lindex $::dayFive::lines 0]] {}
+	::common::log "PartOne: $sl"
+	return $ss
 }
 
-proc ::dayFive::partTwo {} {
-	set line [lindex $::dayFive::lines 0]
-	set len [string length $line]
+proc ::dayFive::partTwo {string} {
+	set len [string length $string]
 	foreach lc $::dayFive::lcs hc $::dayFive::hcs {
-		::common::log "PartTwo: removing all $lc/$hc"
-		set mapped [string map [list $lc {} $hc {}] $line]
-		::common::log "PartTwo: pre-reactor length [string length $mapped]"
-		set rl [::dayFive::reactor $mapped]
-		if {$rl < $len} {
-			set len $rl
-			::common::log "PartTwo: new shortest $len"
+##		::common::log "PartTwo: removing all $lc/$hc"
+		set mapped [string map [list $lc {} $hc {}] $string]
+		::common::log "PartTwo: pre-reactor length without $lc/$hc [string length $mapped]"
+		foreach {sl ss} [::dayFive::reactor $mapped] {}
+		if {$sl < $len} {
+			set len $sl
+			::common::log "PartTwo: new shortest $sl"
 		}
 	}
 	::common::log "PartTwo: $len"
 }
 
-::dayFive::partOne
-::dayFive::partTwo
+::dayFive::partTwo [::dayFive::partOne]
