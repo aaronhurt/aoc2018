@@ -49,7 +49,7 @@ proc ::dayFour::partOne {} {
 	}
 
 	foreach gid [array names sleepers] {
-		set sleepers($gid) [lsort -increasing sleepers($gid)]
+		set sleepers($gid) [lsort -increasing $sleepers($gid)]
 		set total [llength $sleepers($gid)]
 		foreach min $dayFour::minutes {
 			set mc [llength [lsearch -all -exact $sleepers($gid) $min]]
