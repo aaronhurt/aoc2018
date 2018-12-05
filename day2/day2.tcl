@@ -38,7 +38,6 @@ proc ::dayTwo::partOne {} {
 	::common::log "PartOne: [expr {$counts(2) * $counts(3)}]"
 }
 
-
 proc ::dayTwo::partTwo {} {
 	set lines [::common::input]
 	array set sims [list]

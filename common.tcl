@@ -6,7 +6,7 @@
 namespace eval ::common {}
 
 proc ::common::log {text} {
-	puts stdout "[clock format [clock seconds] -format \[%H:%M:%S\]] $text"
+	puts stdout "[clock format [clock seconds] -format {[%H:%M:%S]}] $text"
 }
 
 proc ::common::input {} {
