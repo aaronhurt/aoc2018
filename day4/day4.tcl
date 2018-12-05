@@ -6,6 +6,7 @@
 source "../common.tcl"
 
 namespace eval ::dayFour {
+	variable lines [::common::input]
 	variable minutes
 	for {set x 0} {$x < 60} {incr x} {
 		lappend minutes [format {%02d} $x]
@@ -14,7 +15,7 @@ namespace eval ::dayFour {
 }
 
 proc ::dayFour::partOne {} {
-	foreach line [::common::input] {
+	foreach line $::dayFour::lines {
 		if {[scan [string tolower $line] {[%d-%d-%d %d:%d] %s %s} year month day hour minute w1 w2] != 7} {
 			::common::log "PartOne: error parsing '$line'"
 			return

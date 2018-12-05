@@ -5,7 +5,9 @@
 
 source "../common.tcl"
 
-namespace eval ::dayTwo {}
+namespace eval ::dayTwo {
+	variable lines [::common::input]
+}
 
 proc ::dayTwo::findDoubleTripple {string} {
 	array set ret [list 2 0 3 0]
@@ -30,7 +32,7 @@ proc ::dayTwo::findDoubleTripple {string} {
 proc ::dayTwo::partOne {} {
 	array set counts [list 2 0 3 0]
 
-	foreach line [::common::input] {
+	foreach line $::dayTwo::lines {
 		array set lc [::dayTwo::findDoubleTripple $line]
 		set counts(2) [expr {$counts(2) + $lc(2)}]
 		set counts(3) [expr {$counts(3) + $lc(3)}]
@@ -39,12 +41,11 @@ proc ::dayTwo::partOne {} {
 }
 
 proc ::dayTwo::partTwo {} {
-	set lines [::common::input]
 	array set sims [list]
 
-	foreach aLine $lines {
+	foreach aLine $::dayTwo::lines {
 		set aSplit [split $aLine ""]
-		foreach bLine $lines {
+		foreach bLine $::dayTwo::lines {
 			set dc 0
 			set idx 0
 			array set sims [list $aLine [list]]

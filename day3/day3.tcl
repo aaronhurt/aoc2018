@@ -6,6 +6,7 @@
 source "../common.tcl"
 
 namespace eval ::dayThree {
+	variable lines [::common::input]
 	variable blank;		## blank list
 	variable fabric;	## all cuts
 
@@ -20,7 +21,7 @@ namespace eval ::dayThree {
 
 proc ::dayThree::partOne {} {
 	set oops 0
-	foreach line [::common::input] {
+	foreach line $::dayThree::lines {
 		if {[scan $line "#%d @ %d,%d: %dx%d" id x1 y1 x2 y2] != 5} {
 			::common::log "PartOne: error parsing '$line'"
 			return
@@ -39,7 +40,7 @@ proc ::dayThree::partOne {} {
 }
 
 proc ::dayThree::partTwo {} {
-	foreach line [::common::input] {
+	foreach line $::dayThree::lines {
 		if {[scan $line "#%d @ %d,%d: %dx%d" id x1 y1 x2 y2] != 5} {
 			::common::log "PartOne: error parsing '$line'"
 			return
