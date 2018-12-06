@@ -50,7 +50,7 @@ proc ::dayTwo::partTwo {} {
 			set idx 0
 			array set sims [list $aLine [list]]
 			foreach aChar $aSplit bChar [split $bLine ""] {
-				if {[string compare $aChar $bChar] != 0} {
+				if {[string match $aChar $bChar] == 0} {
 					incr dc
 				} else {
 					array set sims [list $aLine [linsert $sims($aLine) $idx $aChar]]
