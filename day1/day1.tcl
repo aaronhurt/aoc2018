@@ -33,7 +33,7 @@ proc ::dayOne::partTwo {{total 0} {loop 0}} {
 			::common::log "PartTwo: dupe $total after $loop loops/[array size ::dayOne::foundFreqs] freqs"
 			return
 		}
-		set ::dayOne::foundFreqs($total) [list]
+		set ::dayOne::foundFreqs($total) {}
 	}
 	tailcall ::dayOne::partTwo $total [incr loop]
 }
