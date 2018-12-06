@@ -10,17 +10,25 @@ namespace eval ::dayOne {
 	variable foundFreqs; array set ::dayOne::foundFreqs [list]
 }
 
+proc ::dayOne::total {str total} {
+	set num [string trimleft $str {+-}]
+	if {[string match [string index $str 0] {+}]} {
+		return [expr {$total + $num}]
+	}
+	return [expr {$total - $num}]
+}
+
 proc ::dayOne::partOne {} {
 	variable total 0
 	foreach line $::dayOne::lines {
-		set total [expr $total $line]; ## we know the input
+		set total [::dayOne::total $line $total]
 	}
 	::common::log "PartOne: $total"
 }
 
 proc ::dayOne::partTwo {{total 0} {loop 0}} {
 	foreach line $::dayOne::lines {
-		set total [expr $total $line]; ## we know the input
+		set total [::dayOne::total $line $total]
 		if {[info exists ::dayOne::foundFreqs($total)]} {
 			::common::log "PartTwo: dupe $total after $loop loops/[array size ::dayOne::foundFreqs] freqs"
 			return
